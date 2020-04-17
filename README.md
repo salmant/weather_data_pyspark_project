@@ -1,10 +1,8 @@
 # PySpark project named `weather_data_pyspark_project` using pytest with egg file
 
-
-<br>
-## Project skeleton
 The whole project is structured as follows:
 <br>
+
 ```
 .
 +-- config_file.yml
@@ -53,11 +51,13 @@ The whole project is structured as follows:
     +-- mission.py
     +-- spark.py
 ```
+
 <br>
 <br>It is assumed that the CSV input files including weather data are already fetched from a data source API and stored on the `input` folder. We need to developed a process to fetch input files from SFTP, HTTP or any other servers.
 <br>
 <br>Each input CSV file has a specific set of columns as follows:
 <br>
+
 ```
  |-- ForecastSiteCode
  |-- ObservationTime
@@ -75,23 +75,28 @@ The whole project is structured as follows:
  |-- Region
  |-- Country
 ```
+
 <br>
 <br>We would like to have a PySpark project able to convert the input data into a format named `parquet`. The `parquet` data formatted will be strored in the `output` folder in the `parquet` subfolder.
 <br>
+
 <br>The PySpark project should be able to answer different questions: (Question 1) what has/have been the hottest day(s), (Question 2) what has been the hottest temperature and (Question 3) what has/have been the hottest region(s).
 For sure, we just have got one hottest temperature. However, there would be one or more than one day/region with such hottest temperature. Therefore, the PySpark project should be able to deal with all such cases.
 <br>
+
 <br>The results (answers to Questions 1, 2 and 3) formatted based on `parquet` will be stored in the `output` folder in the `results` subfolder as follows:
   *  Questions 1: `Hottest_ObservationDate`
   *  Questions 2: `Hottest_Region`
   *  Questions 3: `Hottest_ScreenTemperature`
 <br>
+
 <br>The folder named `weather_data_pyspark_project` includes various Python files as follows:
   *  `__init__.py`: It contains the information about configuration variables throughout the whole project, and an explanation of the package.
   *  `helpers.py`: It contains some already functions which are not mainly specific to this current project since they can be also used in other projects. All these functions have got their own comments to explain what they do, and what the inputs/outputs are. 
   *  `spark.py`: It contains some functions which are mainly specific to this current project. Every single one of these functions should be unit-tested. All these functions have got their own comments to explain what they do, and what the inputs/outputs are. 
   *  `mission.py`: It contains the main function to execute the whole process from the start to the end. The main function calls other functions to perform the codes and prepare what we need to do in order to answer all aforementioned questions. This function also needs to be tested before the production stage as well.
 <br>
+
 <br>There is a file named `config_file.yml`: This is a YAML configuration file which defines the following parameters to interact with the execution environment. 
 Therefore, there is an expectation a YAML file with the following parameters:
   *  `CSV_LOCATION`: Location of the raw data which is in the CSV format.
@@ -99,17 +104,22 @@ Therefore, there is an expectation a YAML file with the following parameters:
   *  `RESULTS_LOCATION`: Location where the results (hottest day, hottest temprature and hottest region) should be stored.
   *  `OVERWRITE`: Boolean identifying whether the generated data stored in `PARQUET_LOCATION` and `RESULTS_LOCATION` should be overwritten (True) or not (False) if there already exists some data in these folders. This is very important point since we need to consider how the data strategy is defined in this project.
 <br>
+
 <br>A file named `requirements.txt` is added to determine the current PySpark project requirements. This is important for the maintainance since it helps other developers to maintain and use the code.
 <br>
+
 <br>A file named `setup.py` is added to describe the current PySpark project. It will be used to to package the whole code which can be can be attached to the Spark cluster for the production stage. It give us an egg file to be executed on the Spark cluster.
 We run the file named `setup.py` with this command: 
 <br>`python setup.py bdist_egg`
 <br>
+
 <br>When you have the egg file, the following command is used to execute the application code:
 <br>`spark-submit --py-files dist/weather_data_pyspark_project-0.0.1-py3.6.egg weather_data_pyspark_project/mission.py`
 <br>
+
 <br>There is a folder named `docs` which includes the documentations.
 <br>
+
 <br>The folder named `tests` includes all tests codes. There are two files as follows:
   *  `test_spark.py`: It includes all unit tests to ensure that the results of all functions defined in `spark.py` are as expected. 
   *  `test_mission.py`:  It includes the test to ensure the entire Spark development from beginning to the end in order to test the application flow behaves as expected. It also generates some data stored in a folder named `tmp`.
