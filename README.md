@@ -1,5 +1,6 @@
 # PySpark project named `weather_data_pyspark_project` using pytest with egg file
 
+
 <br>
 ## Project skeleton
 The whole project is structured as follows:
