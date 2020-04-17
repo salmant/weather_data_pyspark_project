@@ -85,9 +85,9 @@ For sure, we just have got one hottest temperature. However, there would be one 
 <br>
 
 <br>The results (answers to Questions 1, 2 and 3) formatted based on `parquet` will be stored in the `output` folder in the `results` subfolder as follows:
-  *  Questions 1: `Hottest_ObservationDate`
-  *  Questions 2: `Hottest_Region`
-  *  Questions 3: `Hottest_ScreenTemperature`
+  *  Answer 1: `Hottest_ObservationDate` - what has/have been the hottest day(s)?
+  *  Answer 2: `Hottest_Region` - what has been the hottest temperature?
+  *  Answer 3: `Hottest_ScreenTemperature` - what has/have been the hottest region(s)?
 <br>
 
 <br>The folder named `weather_data_pyspark_project` includes various Python files as follows:
