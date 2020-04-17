@@ -1,0 +1,5 @@
+CSV_LOCATION: "input/"
+PARQUET_LOCATION: "output/parquet"
+RESULTS_LOCATION: "output/results"
+OVERWRITE: True
+
