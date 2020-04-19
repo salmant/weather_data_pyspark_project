@@ -50,7 +50,7 @@ def read_parquet_into_df(session, parquetpath, columns=None):
     return df
 
 def output_validation(outpath, overwrite):
-    """Helper function to check path if exists. It raises ValueError if overwrite is False. Otherwises removes the existing file.
+    """Helper function to check path if exists. It raises ValueError if the file already existing and overwrite is False. Otherwises removes the existing file.
     
     outpath (str) -- Path of ourput file.
     

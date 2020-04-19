@@ -17,7 +17,7 @@ class TestMission(object):
         logger = logging.getLogger("py4j")
         logger.setLevel(logging.WARN)
 
-    def test_simple_source_data(self):
+    def test_main(self):
         
         # Change configurations to a temporary folder
         conf['CSV_LOCATION'] = "tmp/input/"
@@ -92,7 +92,7 @@ class TestMission(object):
         assert(expected_df.collect() == actual_df.collect())
 
 
-    def test_if_max_is_in_multiple_regions_and_multiple_dates(self):
+    def test_main_if_max_is_in_multiple_regions_and_multiple_dates(self):
         
         # Change configurations to a temporary folder
         conf['CSV_LOCATION'] = "tmp/input/"

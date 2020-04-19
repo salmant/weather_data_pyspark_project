@@ -19,15 +19,15 @@ class TestSpark(object):
 
     def test_find_max_in_df(self):
         source_data = [
-            ("20160201", -3.9, "Highland & Eilean Siar"),
-            ("20160201", 1.3, "Highland & Eilean Siar"),
-            ("20160201", 2.8, "Grampian"),
-            ("20160201", 2.5, "Grampian"),
-            ("20160201", 0.8, "Grampian"),
-            ("20160301", 3.2, "Grampian"),
-            ("20160301", 10.4, "Strathclyde"),
-            ("20160301", 2.7, "Central Tayside & Fife"),
-            ("20160301", 2.3, "Central Tayside & Fife")
+            ("2016-02-01T00:00:00", -3.9, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 1.3, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 2.8, "Grampian"),
+            ("2016-02-01T00:00:00", 2.5, "Grampian"),
+            ("2016-02-01T00:00:00", 0.8, "Grampian"),
+            ("2016-03-01T00:00:00", 3.2, "Grampian"),
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
+            ("2016-03-01T00:00:00", 2.7, "Central Tayside & Fife"),
+            ("2016-03-01T00:00:00", 2.3, "Central Tayside & Fife"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
@@ -43,15 +43,15 @@ class TestSpark(object):
 
     def test_filter_df_based_on_column_value(self):
         source_data = [
-            ("20160201", -3.9, "Highland & Eilean Siar"),
-            ("20160201", 1.3, "Highland & Eilean Siar"),
-            ("20160201", 2.8, "Grampian"),
-            ("20160201", 2.5, "Grampian"),
-            ("20160201", 0.8, "Grampian"),
-            ("20160301", 3.2, "Grampian"),
-            ("20160301", 10.4, "Strathclyde"),
-            ("20160301", 2.7, "Central Tayside & Fife"),
-            ("20160301", 2.3, "Central Tayside & Fife")
+            ("2016-02-01T00:00:00", -3.9, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 1.3, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 2.8, "Grampian"),
+            ("2016-02-01T00:00:00", 2.5, "Grampian"),
+            ("2016-02-01T00:00:00", 0.8, "Grampian"),
+            ("2016-03-01T00:00:00", 3.2, "Grampian"),
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
+            ("2016-03-01T00:00:00", 2.7, "Central Tayside & Fife"),
+            ("2016-03-01T00:00:00", 2.3, "Central Tayside & Fife"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
@@ -61,7 +61,7 @@ class TestSpark(object):
         actual_df = filter_df_based_on_column_value(source_df, "ScreenTemperature", 10.4)
 
         expected_data = [
-            ("20160301", 10.4, "Strathclyde")
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde")
         ]
         expected_df = get_spark_session().createDataFrame(
             expected_data,
@@ -71,9 +71,9 @@ class TestSpark(object):
         assert(expected_df.collect() == actual_df.collect())
 
 
-    def test_select_distinct_column_from_df(self):
+    def test_select_distinct_ObservationDate_from_df(self):
         source_data = [
-            ("20160301", 10.4, "Strathclyde")
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
@@ -83,7 +83,7 @@ class TestSpark(object):
         actual_df = select_distinct_column_from_df(source_df, "ObservationDate")
 
         expected_data = [
-            ('20160301',)
+            ('2016-03-01T00:00:00',)
         ]
         expected_df = get_spark_session().createDataFrame(
             expected_data,
@@ -93,31 +93,53 @@ class TestSpark(object):
         assert(expected_df.collect() == actual_df.collect())
 
 
-    def test_select_distinct_column_from_df(self):
+    def test_select_distinct_Region_from_df(self):
         source_data = [
-            ("20160301", 10.4, "Strathclyde")
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
             ["ObservationDate", "ScreenTemperature", "Region"]
         )
 
-        actual_df = select_distinct_column_from_df(source_df, "ObservationDate")
+        actual_df = select_distinct_column_from_df(source_df, "Region")
 
         expected_data = [
-            ("20160301",)
+            ("Strathclyde",)
         ]
         expected_df = get_spark_session().createDataFrame(
             expected_data,
-            ["ObservationDate"]
+            ["Region"]
         )
 
         assert(expected_df.collect() == actual_df.collect())
 
+    def test_select_distinct_Region_from_df_if_max_is_in_multiple_records(self):
+        source_data = [
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
+            ("2016-02-01T00:00:00", 10.4, "Central Tayside & Fife"),
+        ]
+        source_df = get_spark_session().createDataFrame(
+            source_data,
+            ["ObservationDate", "ScreenTemperature", "Region"]
+        )
+
+        actual_df = select_distinct_column_from_df(source_df, "Region")
+
+        expected_data = [
+            ("Strathclyde",),
+            ("Central Tayside & Fife",)
+        ]
+        expected_df = get_spark_session().createDataFrame(
+            expected_data,
+            ["Region"]
+        )
+
+        assert(expected_df.collect() == actual_df.collect())
 
     def test_convert_timestamp_column_to_date_column(self):
         source_data = [
-            ("20160301", 10.4, "Strathclyde")
+            ("20160301", 10.4, "Strathclyde"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
@@ -141,15 +163,15 @@ class TestSpark(object):
 
     def test_find_max_even_if_max_is_in_multiple_records(self):
         source_data = [
-            ("20160201", 10.4, "Highland & Eilean Siar"),
-            ("20160201", 10.4, "Highland & Eilean Siar"),
-            ("20160201", 2.8, "Grampian"),
-            ("20160201", 2.5, "Grampian"),
-            ("20160201", 0.8, "Grampian"),
-            ("20160301", 3.2, "Grampian"),
-            ("20160301", 10.4, "Strathclyde"),
-            ("20160301", 2.7, "Central Tayside & Fife"),
-            ("20160301", 2.3, "Central Tayside & Fife")
+            ("2016-02-01T00:00:00", 10.4, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 10.4, "Highland & Eilean Siar"),
+            ("2016-02-01T00:00:00", 2.8, "Grampian"),
+            ("2016-02-01T00:00:00", 2.5, "Grampian"),
+            ("2016-02-01T00:00:00", 0.8, "Grampian"),
+            ("2016-03-01T00:00:00", 3.2, "Grampian"),
+            ("2016-03-01T00:00:00", 10.4, "Strathclyde"),
+            ("2016-03-01T00:00:00", 2.7, "Central Tayside & Fife"),
+            ("2016-03-01T00:00:00", 2.3, "Central Tayside & Fife"),
         ]
         source_df = get_spark_session().createDataFrame(
             source_data,
