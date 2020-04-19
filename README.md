@@ -77,7 +77,7 @@ The whole project is structured as follows:
 ```
 
 <br>
-<br>We would like to have a PySpark project able to convert the input data into a format named `parquet`. The `parquet` data formatted will be strored in the `output` folder in the `parquet` subfolder.
+<br>We would like to have a PySpark project able to convert the CSV input data into a format named `parquet`. The `parquet` data formatted will be strored in the `output` folder in the `parquet` subfolder.
 <br>
 
 <br>The PySpark project should be able to answer different questions: (Question 1) what has/have been the hottest day(s), (Question 2) what has been the hottest temperature and (Question 3) what has/have been the hottest region(s).
@@ -92,7 +92,7 @@ For sure, we just have got one hottest temperature. However, there would be one 
 
 <br>The folder named `weather_data_pyspark_project` includes various Python files as follows:
   *  `__init__.py`: It contains the information about configuration variables throughout the whole project, and an explanation of the package.
-  *  `helpers.py`: It contains some already functions which are not mainly specific to this current project since they can be also used in other projects. All these functions have got their own comments to explain what they do, and what the inputs/outputs are. 
+  *  `helpers.py`: It contains some functions which are general and they can be also used in other projects as well. All these functions have got their own comments to explain what they do, and what the inputs/outputs are. 
   *  `spark.py`: It contains some functions which are mainly specific to this current project. Every single one of these functions should be unit-tested. All these functions have got their own comments to explain what they do, and what the inputs/outputs are. 
   *  `mission.py`: It contains the main function to execute the whole process from the start to the end. The main function calls other functions to perform the codes and prepare what we need to do in order to answer all aforementioned questions. This function also needs to be tested before the production stage as well.
 <br>
@@ -108,7 +108,7 @@ Therefore, there is an expectation a YAML file with the following parameters:
 <br>A file named `requirements.txt` is added to determine the current PySpark project requirements. This is important for the maintainance since it helps other developers to maintain and use the code.
 <br>
 
-<br>A file named `setup.py` is added to describe the current PySpark project. It will be used to to package the whole code which can be can be attached to the Spark cluster for the production stage. It give us an egg file to be executed on the Spark cluster.
+<br>A file named `setup.py` is added to describe the current PySpark project. It is used to package the whole code that can be attached to the Spark cluster for the production stage. It gives us an egg file to be executed on the Spark cluster.
 We run the file named `setup.py` with this command: 
 <br>`python setup.py bdist_egg`
 <br>
