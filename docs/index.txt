@@ -6,6 +6,9 @@ get_spark_session
 Explain: 
 Helper function to create a Spark session using PySpark.
 
+Args:
+None
+
 #######################################
 
 Function: 
